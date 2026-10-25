@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقويمي التفاعلي (25 أكتوبر - 18 نوفمبر 2026)</title>
+    
+    <!-- إعدادات إضافته للشاشة الرئيسية للهواتف -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="تقويمي">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <style>
+        :root {
+            --primary-color: #4a7c59;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #d1d5db;
+            --weekday-bg: #e2e8f0;
+            --weekend-bg: #f8d7da;
+            --outside-bg: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #edf2f7;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #cbd5e0;
+            border-radius: 6px;
+            height: 10px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #48bb78;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: var(--weekday-bg);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .day-header.weekend {
+            background: #f5c6cb;
+            color: #721c24;
+        }
+
+        .day-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .day-card.weekend {
+            background-color: #fff5f5;
+            border-color: #feb2b2;
+        }
+
+        .day-card.outside {
+            background-color: var(--outside-bg);
+            opacity: 0.6;
+        }
+
+        .day-card.completed {
+            border-color: #48bb78;
+            background-color: #f0fff4;
+        }
+
+        .day-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .day-tasks {
+            font-size: 11px;
+            color: #555;
+            margin-top: 5px;
+            resize: none;
+            border: 1px dashed #cbd5e0;
+            border-radius: 4px;
+            padding: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 45px;
+        }
+
+        .footer-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+            .footer-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .box-section {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .box-section h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #2d3748;
+        }
+
+        textarea.notes {
+            width: 100%;
+            height: 80px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        .goals-list label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>📅 تقويمي التفاعلي</h1>
+        <p>من 25 أكتوبر إلى 18 نوفمبر 2026</p>
+    </header>
+
+    <!-- شريط العداد والتقدم -->
+    <div class="stats-bar">
+        <div>الأيام المنجزة: <span id="completed-count">0</span> / 25</div>
+        <div style="flex-grow: 1; margin: 0 20px;">
+            <div style="font-size: 12px; margin-bottom: 2px;">نسبة الإنجاز: <span id="progress-percent">0%</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+        <button onclick="resetData()" style="background: #e53e3e; padding: 5px 10px; font-size: 12px;">إعادة ضبط</button>
+    </div>
+
+    <!-- شبكة التقويم -->
+    <div class="calendar-grid" id="calendar-grid">
+        <!-- يتم تعبئة الأيام تلقائياً عبر الجافاسكريبت -->
+    </div>
+
+    <!-- القسم السفلي: الأهداف والملاحظات -->
+    <div class="footer-section">
+        <div class="box-section">
+            <h3>🎯 أهداف خلال هذه الفترة:</h3>
+            <div class="goals-list" id="goals-container">
+                <label><input type="checkbox" class="goal-item" data-id="0"> الالتزام الدوام بالمحاضرات وعدم تجاوز 2% غياب</label>
+                <label><input type="checkbox" class="goal-item" data-id="1"> مذاكرة وتنظيم الوقت</label>
+                <label><input type="checkbox" class="goal-item" data-id="2"> الاهتمام بصحتي ولياقتي</label>
+                <label><input type="checkbox" class="goal-item" data-id="3"> تجهيز احتياجاتي المعيشية</label>
+                <label><input type="checkbox" class="goal-item" data-id="4"> إنجاز ما أستطيع من مهامي</label>
+            </div>
+        </div>
+
+        <div class="box-section">
+            <h3>📝 ملاحظات عامة:</h3>
+            <textarea id="general-notes" class="notes" placeholder="اكتب ملاحظاتك العامة هنا..."></textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+    // بيانات الأيام (25 يوماً من 25 أكتوبر إلى 18 نوفمبر 2026)
+    const daysData = [
+        { date: "25 أكتوبر", dayName: "الأحد", type: "weekday" },
+        { date: "26 أكتوبر", dayName: "الاثنين", type: "weekday" },
+        { date: "27 أكتوبر", dayName: "الثلاثاء", type: "weekday" },
+        { date: "28 أكتوبر", dayName: "الأربعاء", type: "weekday" },
+        { date: "29 أكتوبر", dayName: "الخميس", type: "weekday" },
+        { date: "30 أكتوبر", dayName: "الجمعة", type: "weekend" },
+        { date: "31 أكتوبر", dayName: "السبت", type: "weekend" },
+        { date: "1 نوفمبر", dayName: "الأحد", type: "weekday" },
+        { date: "2 نوفمبر", dayName: "الاثنين", type: "weekday" },
+        { date: "3 نوفمبر", dayName: "الثلاثاء", type: "weekday" },
+        { date: "4 نوفمبر", dayName: "الأربعاء", type: "weekday" },
+        { date: "5 نوفمبر", dayName: "الخميس", type: "weekday" },
+        { date: "6 نوفمبر", dayName: "الجمعة", type: "weekend" },
+        { date: "7 نوفمبر", dayName: "السبت", type: "weekend" },
+        { date: "8 نوفمبر", dayName: "الأحد", type: "weekday" },
+        { date: "9 نوفمبر", dayName: "الاثنين", type: "weekday" },
+        { date: "10 نوفمبر", dayName: "الثلاثاء", type: "weekday" },
+        { date: "11 نوفمبر", dayName: "الأربعاء", type: "weekday" },
+        { date: "12 نوفمبر", dayName: "الخميس", type: "weekday" },
+        { date: "13 نوفمبر", dayName: "الجمعة", type: "weekend" },
+        { date: "14 نوفمبر", dayName: "السبت", type: "weekend" },
+        { date: "15 نوفمبر", dayName: "الأحد", type: "weekday" },
+        { date: "16 نوفمبر", dayName: "الاثنين", type: "weekday" },
+        { date: "17 نوفمبر", dayName: "الثلاثاء", type: "weekday" },
+        { date: "18 نوفمبر", dayName: "الأربعاء", type: "weekday" }
+    ];
+
+    const grid = document.getElementById('calendar-grid');
+
+    // ترتيب أيام الأسبوع كعناوين رأسية
+    const headers = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+    headers.forEach(h => {
+        const div = document.createElement('div');
+        div.className = `day-header ${h === 'الجمعة' || h === 'السبت' ? 'weekend' : ''}`;
+        div.innerText = h;
+        grid.appendChild(div);
+    });
+
+    // إضافة مساحات فارغة لضبط بداية الأسبوع إذا لزم الأمر، ثم بناء البطاقات
+    daysData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = `day-card ${item.type === 'weekend' ? 'weekend' : ''}`;
+        card.id = `day-card-${index}`;
+
+        card.innerHTML = `
+            <div class="day-top">
+                <span>${item.dayName} ${item.date}</span>
+                <input type="checkbox" class="day-checkbox" data-index="${index}" onchange="updateProgress()">
+            </div>
+            <textarea class="day-tasks" placeholder="مهام هذا اليوم..." data-index="${index}" oninput="saveData()"></textarea>
+        `;
+        grid.appendChild(card);
+    });
+
+    // استرجاع البيانات المحفوظة
+    function loadData() {
+        const savedState = JSON.parse(localStorage.getItem('calendar_app_state') || '{}');
+        
+        if (savedState.days) {
+            savedState.days.forEach((day, index) => {
+                const checkbox = document.querySelector(`.day-checkbox[data-index="${index}"]`);
+                const textarea = document.querySelector(`.day-tasks[data-index="${index}"]`);
+                if (checkbox) checkbox.checked = day.completed;
+                if (textarea) textarea.value = day.taskText || '';
+                
+                if (day.completed) {
+                    document.getElementById(`day-card-${index}`).classList.add('completed');
+                }
+            });
+        }
+
+        if (savedState.goals) {
+            savedState.goals.forEach((val, index) => {
+                const goalInput = document.querySelector(`.goal-item[data-id="${index}"]`);
+                if (goalInput) goalInput.checked = val;
+            });
+        }
+
+        if (savedState.generalNotes) {
+            document.getElementById('general-notes').value = savedState.generalNotes;
+        }
+
+        updateProgressUI();
+    }
+
+    // حفظ البيانات في الذاكرة المحلية
+    function saveData() {
+        const daysState = [];
+        for (let i = 0; i < daysData.length; i++) {
+            const checkbox = document.querySelector(`.day-checkbox[data-index="${i}"]`);
+            const textarea = document.querySelector(`.day-tasks[data-index="${i}"]`);
+            daysState.push({
+                completed: checkbox ? checkbox.checked : false,
+                taskText: textarea ? textarea.value : ''
+            });
+        }
+
+        const goalsState = [];
+        document.querySelectorAll('.goal-item').forEach((item, i) => {
+            goalsState.push(item.checked);
+        });
+
+        const generalNotes = document.getElementById('general-notes').value;
+
+        const state = {
+            days: daysState,
+            goals: goalsState,
+            generalNotes: generalNotes
+        };
+
+        localStorage.setItem('calendar_app_state', JSON.stringify(state));
+    }
+
+    function updateProgress() {
+        saveData();
+        updateProgressUI();
+    }
+
+    function updateProgressUI() {
+        let completedCount = 0;
+        for (let i = 0; i < daysData.length; i++) {
+            const checkbox = document.querySelector(`.day-checkbox[data-index="${i}"]`);
+            const card = document.getElementById(`day-card-${i}`);
+            if (checkbox && checkbox.checked) {
+                completedCount++;
+                card.classList.add('completed');
+            } else {
+                card.classList.remove('completed');
+            }
+        }
+
+        document.getElementById('completed-count').innerText = completedCount;
+        const percent = Math.round((completedCount / daysData.length) * 100);
+        document.getElementById('progress-percent').innerText = percent + '%';
+        document.getElementById('progress-bar').style.width = percent + '%';
+    }
+
+    function resetData() {
+        if (confirm('هل أنت متأكد من إعادة ضبط جميع البيانات؟')) {
+            localStorage.removeItem('calendar_app_state');
+            location.reload();
+        }
+    }
+
+    // الاستماع لتغييرات الأهداف والملاحظات العامة للحفظ التلقائي
+    document.querySelectorAll('.goal-item').forEach(item => {
+        item.addEventListener('change', saveData);
+    });
+    document.getElementById('general-notes').addEventListener('input', saveData);
+
+    // تشغيل التحميل عند فتح الصفحة
+    window.onload = loadData;
+</script>
+
+</body>
+</html>
